@@ -141,5 +141,5 @@ runs:
         fi
       shell: bash
 
-    - run: rustc +${{steps.parse.outputs.toolchain}} --version --verbose
+    - run: rustc ${{steps.gen-tag.outputs.tag}} --version --verbose
       shell: bash
