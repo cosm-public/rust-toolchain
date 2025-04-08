@@ -5,6 +5,9 @@ one-line concise usage and good defaults.
 
 <br>
 
+> [!NOTE]
+> This repository is forked from `dtolnay/rust-toolchain`, to add support for `rust-toolchain.toml`
+
 ## Example workflow
 
 ```yaml
