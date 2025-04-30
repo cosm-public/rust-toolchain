@@ -57,7 +57,7 @@ runs:
         if [[ -z "$toolchain" ]]; then
           echo "tag=" >> $GITHUB_OUTPUT
         else
-          echo "tag=$toolchain" >> $GITHUB_OUTPUT
+          echo "tag=+$toolchain" >> $GITHUB_OUTPUT
         fi
       env:
         toolchain: ${{steps.parse.outputs.toolchain}}
@@ -88,8 +88,14 @@ runs:
       if: runner.os != 'Windows'
       shell: bash
 
-    - name: rustup toolchain install ${{steps.parse.outputs.toolchain}}
+    - if: ${{steps.parse.outputs.toolchain != ''}}
+      name: rustup toolchain install ${{steps.parse.outputs.toolchain}}
       run: rustup toolchain install ${{steps.parse.outputs.toolchain}}${{steps.flags.outputs.targets}}${{steps.flags.outputs.components}} --profile minimal${{steps.flags.outputs.downgrade}} --no-self-update
+      shell: bash
+
+    - if: ${{steps.parse.outputs.toolchain == ''}}
+      name: rustup install default toolchain
+      run: rustup install ${{steps.flags.outputs.targets}}${{steps.flags.outputs.components}} --profile minimal${{steps.flags.outputs.downgrade}} --no-self-update
       shell: bash
 
     - if: ${{steps.parse.outputs.toolchain != ''}}
